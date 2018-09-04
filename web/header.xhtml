@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      >
+    <h:head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <body>
+        <ui:composition>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="dogadjaj.xhtml">eVent</a>
+                    </div>
+
+                    <h:form id="loginForma" class="navbar-form navbar-right">
+                        <h:panelGroup rendered="#{loginBean.korisnik eq null}" class="form-group">
+                            <h:inputText  id="korIme" class="form-control" a:placeholder="korisnicko ime"></h:inputText>&#160;
+                            <h:inputSecret  id="lozinka" class="form-control" a:placeholder="lozinka"></h:inputSecret>&#160;
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{loginBean.korisnik eq null}">
+                            <h:commandButton  action="#{loginBean.prijaviSe()}" type="submit" value="Prijavi se!" class="btn btn-default" ></h:commandButton>
+                            <a class="btn btn-default" href="login.xhtml">Registracija</a>
+                        </h:panelGroup>
+                        <h:panelGroup class="dropdown" rendered="#{loginBean.korisnik.ime ne null}">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-user"></span>&#160;
+                                #{loginBean.korisnik.ime}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a jsf:action="prisustva.xhtml?faces-redirect=true" type="submit">Prisustva</a></li>
+                                <li><a jsf:action="noviDogadjaj.xhtml?faces-redirect=true" type="submit">Novi</a></li>
+                                <li><a jsf:action="login.xhtml?faces-redirect=true" type="submit">Nalog</a></li>
+                                <li class="divider"></li>
+                                <li><a jsf:action="#{loginBean.odjava()}" type="submit">Odjava!</a></li>
+                            </ul>
+                        </h:panelGroup>
+                    </h:form>
+
+                </div>
+            </nav>
+        </ui:composition>
+    </body>
+</html>

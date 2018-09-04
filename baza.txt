@@ -1,0 +1,153 @@
+﻿/*
+SQLyog Community v12.4.1 (64 bit)
+MySQL - 5.6.17 : Database - dogadjaj
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`dogadjaj` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+USE `dogadjaj`;
+
+/*Table structure for table `mesto` */
+
+DROP TABLE IF EXISTS `mesto`;
+
+CREATE TABLE `mesto` (
+  `ptt` varchar(6) NOT NULL,
+  `naziv` varchar(40) NOT NULL,
+  PRIMARY KEY (`ptt`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `mesto` */
+
+insert  into `mesto`(`ptt`,`naziv`) values 
+('11000','Beograd'),
+('21000','Novi Sad'),
+('32308','Pranjani'),
+('36210','Vrnjačka Banja'),
+('37230','Aleksandrovac');
+
+
+/*Table structure for table `korisnik` */
+
+DROP TABLE IF EXISTS `korisnik`;
+
+CREATE TABLE `korisnik` (
+  `ime` varchar(40) NOT NULL,
+  `lozinka` varchar(40) NOT NULL,
+  `telefon` varchar(20) DEFAULT NULL,
+  `ptt` varchar(6) NOT NULL,
+  PRIMARY KEY (`ime`),
+  KEY `ptt` (`ptt`),
+  CONSTRAINT `korisnik_ibfk_1` FOREIGN KEY (`ptt`) REFERENCES `mesto` (`ptt`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `korisnik` */
+
+insert  into `korisnik`(`ime`,`lozinka`,`telefon`,`ptt`) values 
+('Ceca','ceca','06435462','21000'),
+('Djuci','djuci','073456765','11000'),
+('Jakov','jakov','064384123','36210'),
+('Kata','kata','065233456','11000');
+
+/*Table structure for table `dogadjaj` */
+
+DROP TABLE IF EXISTS `dogadjaj`;
+
+CREATE TABLE `dogadjaj` (
+  `dogadjaj_id` int(6) NOT NULL AUTO_INCREMENT,
+  `naziv` varchar(40) NOT NULL,
+  `opis` varchar(120) NOT NULL,
+  `datum` datetime NOT NULL,
+  `adresa` varchar(40) NOT NULL,
+  `ptt` varchar(6) NOT NULL,
+  `ime` varchar(40) NOT NULL,
+  PRIMARY KEY (`dogadjaj_id`),
+  KEY `ptt` (`ptt`),
+  KEY `ime` (`ime`),
+  CONSTRAINT `dogadjaj_ibfk_1` FOREIGN KEY (`ptt`) REFERENCES `mesto` (`ptt`) ON UPDATE CASCADE,
+  CONSTRAINT `dogadjaj_ibfk_2` FOREIGN KEY (`ime`) REFERENCES `korisnik` (`ime`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+/*Data for the table `dogadjaj` */
+
+insert  into `dogadjaj`(`dogadjaj_id`,`naziv`,`opis`,`datum`,`adresa`,`ptt`,`ime`) values 
+(1,'Žurka za kraj godine','fon FON zurka leto','2017-07-15 17:00:00','Jove Ilića 154','11000','Kata'),
+(5,'LoveFest','festival electro dance trance reggae','2017-08-12 12:00:00','Kod Jezera','36210','Jakov'),
+(6,'Župska berba','vino berba župa zupa','2017-09-22 15:00:00','Centar','37230','Djuci'),
+(11,'Rođus Kata bara','rođus žurka zurka leto','2017-07-12 00:00:00','Popinskih boraca 42','36210','Kata'),
+(16,'Degustacija vina Yakov vinarije','vino crno belo degustacija','2017-07-13 20:00:00','Banjska 34','36210','Jakov'),
+(17,'Odbrana seminarskog iz softvera','softveri odbrana hitno gori','2017-07-10 12:00:00','Jove Ili?a 154','11000','Jakov'),
+(18,'Dogadjaj','opis','2017-07-14 12:00:00','Ulica','32308','Jakov'),
+(20,'Župska berba','vino berba župa zupa','2019-09-22 15:00:00','Centar','37230','Djuci'),
+(21,'Rođus Kata bara','rođus žurka zurka leto','2019-07-12 00:00:00','Popinskih boraca 42','36210','Kata'),
+(22,'Degustacija vina Yakov vinarije','vino crno belo degustacija','2019-07-13 20:00:00','Banjska 34','36210','Jakov'),
+(23,'Odbrana seminarskog iz softvera','softveri odbrana hitno gori','2019-07-10 12:00:00','Jove Ili?a 154','11000','Jakov'),
+(24,'Dogadjaj','opis','2019-07-14 12:00:00','Ulica','32308','Jakov');
+
+/*Table structure for table `aktivnost` */
+
+DROP TABLE IF EXISTS `aktivnost`;
+
+CREATE TABLE `aktivnost` (
+  `redni_broj` int(2) NOT NULL AUTO_INCREMENT,
+  `dogadjaj_id` int(6) NOT NULL,
+  `naziv` varchar(40) NOT NULL,
+  `opis` varchar(120) DEFAULT NULL,
+  PRIMARY KEY (`redni_broj`,`dogadjaj_id`),
+  KEY `dogadjaj_id` (`dogadjaj_id`),
+  CONSTRAINT `aktivnost_ibfk_1` FOREIGN KEY (`dogadjaj_id`) REFERENCES `dogadjaj` (`dogadjaj_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+
+/*Data for the table `aktivnost` */
+
+insert  into `aktivnost`(`redni_broj`,`dogadjaj_id`,`naziv`,`opis`) values 
+(9,1,'Pozdravna reč organizatora','Prisutne pozdravlja Pera Perić'),
+(10,1,'Gramofon','DJ Slavka vrti ploču!'),
+(13,5,'Rambo','Rambo za sve goste'),
+(14,5,'Goci bend','U inat metalikama'),
+(15,6,'Degustacija vina','Degustacija vina na tezgi opštine'),
+(16,6,'Poseta vinariji Petrović','Vinarija Petrovi? na 11km od Aleksandrovca'),
+(24,11,'Opuštencija bend','Luda petorka svira za vas'),
+(25,11,'Džez noć','Od ponoći vas zabavlja \"Jzz\" band'),
+(31,16,'Muzi?ka podloga','Prisutne zabavlja sastav \"Tri žice\"'),
+(32,17,'Pregled programa','Student prezentuje rad programa'),
+(33,17,'Pregled dokumentacije','Student prikazuje dokumentaciju'),
+(34,18,'Radimo','radimo to i to'),
+(35,18,'Jos neka','jos nwka');
+
+
+/*Table structure for table `prisustvo` */
+
+DROP TABLE IF EXISTS `prisustvo`;
+
+CREATE TABLE `prisustvo` (
+  `dogadjaj_id` int(6) NOT NULL,
+  `ime` varchar(40) NOT NULL,
+  `broj_osoba` int(1) DEFAULT NULL,
+  `zahtev` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`dogadjaj_id`,`ime`),
+  KEY `ime` (`ime`),
+  CONSTRAINT `prisustvo_ibfk_1` FOREIGN KEY (`dogadjaj_id`) REFERENCES `dogadjaj` (`dogadjaj_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `prisustvo_ibfk_2` FOREIGN KEY (`ime`) REFERENCES `korisnik` (`ime`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `prisustvo` */
+
+insert  into `prisustvo`(`dogadjaj_id`,`ime`,`broj_osoba`,`zahtev`) values 
+(1,'Jakov',1,''),
+(1,'Kata',2,'Sto do bine'),
+(6,'Jakov',3,'Sto na otvorenom');
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

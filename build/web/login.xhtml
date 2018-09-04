@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"      
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Prijava</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </h:head>
+    <body>
+        <ui:insert>
+            <ui:include src="header.xhtml"/>
+        </ui:insert>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-6">
+                    <div class="well" id="sve">
+                        <h:form id="prijava">
+                            <fieldset>
+                                <legend>Registrujte se</legend>
+                                <label for='name' >Korisničko ime: </label><br></br>
+                                <h:inputText class="form-control" id="name" maxlength="50" value="#{registerBean.ime}"></h:inputText><br></br>
+                                <label for='password' >Lozinka: </label><br></br>
+                                <h:inputSecret  class="form-control" id="pass" maxlength="50" value="#{registerBean.lozinka}"></h:inputSecret><br></br>
+                                
+                               
+                                
+                                <label for='telefon' >Telefon: </label><br></br>
+                                <h:inputText class="form-control" id="telefon" maxlength="50" value="#{registerBean.telefon}"></h:inputText><br></br>
+                                <div>
+                                    <label for='mesto' >Mesto: </label><br></br>
+                                    <h:selectOneMenu id="mesto" value="#{registerBean.ptt}" class="btn btn-default dropdown-toggle">
+                                        <f:selectItems value="#{registerBean.listaMesta}" var="m"
+                                                       itemLabel="#{m.naziv}" itemValue="#{m.ptt}" />
+                                    </h:selectOneMenu>
+                                </div><br></br>
+                                <h:commandButton action="#{registerBean.registrujSe}" rendered="#{registerBean.log eq null or loginBean.korisnik eq null}" class="btn btn-default" value='Registrujte se'>
+                                    <f:ajax execute="@form" render="prijava"></f:ajax>
+                                </h:commandButton><br></br>
+                                <h:commandButton action="#{registerBean.obrisi()}" rendered="#{registerBean.log ne null and loginBean.korisnik ne null }" class="btn btn-danger" value='Obrisi!'>
+                                    <f:ajax execute="@form" render="prijava"></f:ajax>
+                                </h:commandButton><br></br>
+                            </fieldset>
+                            <p></p>
+                            <h3> <h:outputText rendered="#{registerBean.poruka eq 'Uspešna registracija, prijavite se!'}"  class='label label-success label-lg' value="Uspešna registracija, prijavite se!" ></h:outputText></h3>
+                            <h3><h:outputText rendered="#{registerBean.poruka eq 'Korisničko ime je zauzeto, unestite drugo!'}" class='label label-warning label-lg' value="Korisničko ime je zauzeto, unestite drugo!" ></h:outputText></h3>
+                            <h3><h:outputText rendered="#{registerBean.poruka eq 'Nalog obrisan!'}" class='label label-warning label-lg' value="Nalog obrisan!" ></h:outputText></h3>
+                        </h:form>
+
+
+                    </div>	
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

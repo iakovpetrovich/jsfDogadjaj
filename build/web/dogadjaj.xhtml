@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+        <title>Događaji</title>
+    </h:head>
+    <body>
+        <ui:insert>
+            <ui:include src="header.xhtml"/>
+        </ui:insert>
+        <div class="container">	
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <h:form>
+                        <div class="">
+                            <div class="col-sm-8">
+                                <h:inputText id="pretragaReci" value="#{dogadjajBean.uneteReci}" class="btn btn-default btn-block" ></h:inputText>
+                            </div>
+                            <div class="col-sm-4">
+                                <h:commandButton value="Traži!" action="#{dogadjajBean.pronadiDogadjaje()}" class="btn btn-info">
+                                    <f:ajax execute="pretragaReci" render="listaD"></f:ajax>
+                                </h:commandButton>&#160;
+                                <h:commandButton rendered="#{loginBean.korisnik eq null}" value="Sveže!" action="#{dogadjajBean.popuniListuDogadjaja()}" class="btn btn-danger">
+                                    <f:ajax render="listaD"></f:ajax>
+                                </h:commandButton>
+                                <h:commandButton rendered="#{loginBean.korisnik ne null}" value="Moji!" action="#{dogadjajBean.vratiMoje()}" class="btn btn-danger">
+                                    <f:ajax render="listaD"></f:ajax>
+                                </h:commandButton>
+
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+
+                <div class="col-sm-3"></div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-6" id="serdina">
+
+                    <div class="well">
+
+                        <div class="panel-group" id="lista">
+                            <!--<?php include_once "dajDogadjaje.php"; ?>-->
+                            <h:form id="listaD">
+
+                                <ui:repeat  value="#{dogadjajBean.dogadjaji}" var="dogadjaj">
+
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading" > 
+                                            <h:outputText value="#{dogadjaj.naziv}" />&#160;
+                                            <h:panelGroup class="pull-right">
+                                                <h:outputLabel value="Datum i vreme:" class="label label-primary"></h:outputLabel>&#160;
+                                                <h:outputText value="#{dogadjaj.konvertujDatum()}" />
+                                            </h:panelGroup>
+                                        </div>
+                                        <div class="panel-body" >
+                                            <label class="label label-primary">Adresa:</label>&#160;
+                                            <h:outputText value="#{dogadjaj.adresa}" /><br></br>
+                                            <label class="label label-primary">Mesto:</label>&#160;
+                                            <h:outputText value="#{dogadjaj.mesto.naziv}" /><br></br>
+
+                                            <label class="label label-primary">Napravio:</label>&#160;
+                                            <h:outputText value="#{dogadjaj.kreator.ime}" /><br></br>
+                                            <label class="label label-primary">Ključne reči:</label>&#160;
+                                            <h:outputText value="#{dogadjaj.opis}" />
+                                            <h:commandButton class="btn btn-info pull-right btn-sm" value="Detalji" action="#{dogadjajBean.postavi(dogadjaj)}">
+                                                <f:setPropertyActionListener 
+                                                    target="#{loginBean.dogadjaj}" value="#{dogadjaj}" />
+
+                                            </h:commandButton>
+                                            <br></br>
+                                            <br></br>
+                                            <h:commandButton class="btn btn-success pull-right btn-sm" value="Izmeni" rendered="#{loginBean.korisnik ne null and dogadjaj.kreator.ime eq loginBean.korisnik.ime}" action="izmenidogadjaj.xhtml?faces-redirect=true">
+                                                <f:setPropertyActionListener 
+                                                    target="#{loginBean.dogadjaj}" value="#{dogadjaj}" />
+                                            </h:commandButton> 
+
+
+                                        </div>
+                                    </div>
+
+                                </ui:repeat>
+                            </h:form>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

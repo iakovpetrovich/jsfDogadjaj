@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <title>Novi dogadjaj</title>
+    </h:head>
+    <body>
+        <ui:insert>
+            <ui:include src="header.xhtml"/>
+        </ui:insert>
+        <div class="container">	
+            <div class="row">
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-6" id="serdina">
+                    <div class="well">
+                        <div class="form-goup" id="lista">
+                            <fieldset>
+                                <legend>Objavite događaj</legend>
+                                <h:form id="novi" enctype="multipart/form-data">
+                                    <p:outputLabel for="naziv" value="Naziv:" class="label label-primary" ></p:outputLabel>
+                                    <p:inputText id="naziv" value="#{noviBean.naziv}" placeholder="Unesite naziv događaja" class="form-control"></p:inputText><br></br>
+
+                                    <p:outputLabel for="kljucneReci" value="Ključne reči:" class="label label-primary" ></p:outputLabel>
+                                    <p:inputTextarea id="kljucneReci" value="#{noviBean.opis}" placeholder="Unestite ključne reči" class="form-control"></p:inputTextarea><br></br>
+
+                                    <p:outputLabel for="vreme" value="Vreme:" class="label label-primary" ></p:outputLabel>
+                                    <h:panelGroup layout="block" id="vreme">
+                                        <p:calendar id="datetime" value="#{noviBean.datum}" placeholder="Odaberite vreme" pattern="MM/dd/yyyy HH:mm:ss" /><br></br>
+                                    </h:panelGroup><br></br>
+                                    <p:outputLabel for="adresa" value="Adresa:" class="label label-primary" ></p:outputLabel>
+                                    <p:inputText id="adresa" value="#{noviBean.adresa}" placeholder="Unesite adresu" class="form-control"></p:inputText><br></br>
+
+                                    <p:outputLabel for="mesto" value="Odaberite mesto:" class="label label-primary" ></p:outputLabel>
+                                    <h:panelGroup id="mesto" layout="block">
+                                        <h:selectOneMenu  value="#{noviBean.ptt}" class="btn btn-default dropdown-toggle">
+
+                                            <f:selectItems value="#{noviBean.listaMesta}" var="m"
+                                                           itemLabel="#{m.naziv}" itemValue="#{m.ptt}" />
+                                        </h:selectOneMenu>
+                                    </h:panelGroup><br></br>
+
+                                    <p:outputLabel for="na" value="Aktivnost:" class="label label-primary" ></p:outputLabel>
+                                    <p:inputText id="na" value="#{noviBean.nazivA}" placeholder="Unestite aktivnost" class="form-control"></p:inputText><br></br>
+
+                                    <p:outputLabel for="oa" value="Opis aktivnosti:" class="label label-primary" ></p:outputLabel>
+                                    <p:inputText id="oa" value="#{noviBean.opisA}" placeholder="Unesite opis " class="form-control"></p:inputText><br></br>
+
+                                    <h:commandButton action="#{noviBean.dodajAktivnost()}" value="Dodaj!" class="btn btn-primary"> 
+                                        <f:ajax execute="@form" render="lista"></f:ajax>
+                                    </h:commandButton>
+
+                                    <h:dataTable id="lista" value="#{noviBean.spisakAktivnosti}" var="aktivnost" class="table table-hover">
+
+                                        <h:column>    				
+                                            <f:facet name = "header">Dogadjaj:</f:facet>    				
+                                                #{aktivnost.naziv}
+                                        </h:column>
+                                        <h:column>    				
+                                            <f:facet name = "header">Datum:</f:facet>    				
+                                                #{aktivnost.opis}
+                                        </h:column>
+
+                                        <h:column>    				
+                                            <f:facet name = "header">Otkaži:</f:facet>
+
+                                            <h:commandButton action="#{noviBean.obrisiAktivnost(aktivnost)}" value="Otkaži!" class="btn btn-danger"> 
+                                                <f:ajax execute="@form" render="novi"></f:ajax>
+                                            </h:commandButton>
+
+                                        </h:column>
+
+                                    </h:dataTable> <br></br>
+
+                                    <p:fileUpload value="#{noviBean.uploadedFile}" mode="simple" label="Odaberi fotku" skinSimple="true"/><br></br><br></br>
+
+                                    <h:commandButton rendered="#{not noviBean.zapamcen}" action="#{noviBean.zapamti()}" value="Zapamti!" class="btn btn-primary"> 
+                                        <f:ajax execute="@form" render="novi"></f:ajax>
+                                    </h:commandButton>
+                                    <h3> <h:outputText rendered="#{noviBean.zapamcen}"  class='label label-success label-lg' value="Dogadjaj je zapamcen!" ></h:outputText></h3>
+                                </h:form>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

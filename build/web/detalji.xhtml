@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pas="http://xmlns.jcp.org/jsf/passthrough"
+      >
+    <h:head>
+        <title>#{detaljiBean.dogadjaj.naziv}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </h:head>
+    <body>
+        <ui:insert>
+            <ui:include src="header.xhtml"/>
+        </ui:insert>
+        <div class="container">	
+            <div class="row">
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-6" id="serdina">
+                    <div class="well">
+                        <div class="panel-group" id="lista">
+
+                            <div class="panel panel-primary">
+                                <div class="panel-heading" > 
+                                    <h:outputText value="#{detaljiBean.dogadjaj.naziv}" />&#160;
+                                    <h:panelGroup class="pull-right">
+                                        <h:outputLabel value="Datum i vreme:" class="label label-primary"></h:outputLabel>&#160;
+                                        <h:outputText value="#{dogadjaj.konvertujDatum()}" />
+                                    </h:panelGroup>
+                                </div>
+                                <div class="panel-body" >
+                                    <label class="label label-primary">Mesto:</label>
+                                    <h:outputText value="#{detaljiBean.dogadjaj.mesto.naziv}" /><br></br>
+                                    <label class="label label-primary">Adresa:</label>
+                                    <h:outputText value="#{detaljiBean.dogadjaj.adresa}" /><br></br>
+                                    <label class="label label-primary">Napravio:</label>
+                                    <h:outputText value="#{detaljiBean.dogadjaj.kreator.ime}" /><br></br>
+                                    <label class="label label-primary">Kljućne reči:</label>
+                                    <h:outputText value="#{detaljiBean.dogadjaj.opis}" /><br></br><br></br>
+                                    <h:graphicImage  class="img-responsive" value="#{detaljiBean.dogadjaj.slika}"></h:graphicImage>
+                                    <h:dataTable value="#{detaljiBean.dogadjaj.spisakAktivnosti}" var="aktivnost" class="table table-hover">
+                                        <h:column>    				
+                                            <f:facet name = "header">Naziv:</f:facet>    				
+                                                #{aktivnost.naziv}
+                                        </h:column>
+                                        <h:column>    				
+                                            <f:facet name = "header">Opis:</f:facet>    				
+                                                #{aktivnost.opis}
+                                        </h:column>
+                                    </h:dataTable>  
+                                    <h:panelGroup id="prisustvo" layout="block" >
+                                        <h:form id="dogadjajDetalji" rendered="#{loginBean.korisnik ne null and loginBean.korisnik.ime ne detaljiBean.dogadjaj.kreator.ime}">
+                                            <h:outputLabel for="zahtev" value="Poseban zahtev:" />
+                                            <h:inputTextarea id="zahtev" pas:placeholder="Budite ljubazni, saopštite nam šta Vam je važno!" value="#{detaljiBean.zahtev}" rows="3" class="form-control input-sm"></h:inputTextarea>
+                                            <h:outputLabel for="brojGostiju" value="Broj mesta:" />
+                                            <p:spinner id="brojGostiju" value="#{detaljiBean.brojGostiju}" min="1" max="6"  size="1" /><br></br><br></br>
+                                            <h:commandButton rendered="#{not detaljiBean.dolazakPotvrdjen}" action="#{detaljiBean.prisustvuj(detaljiBean.loginBea.korisnik, detaljiBean.loginBea.dogadjaj)}" value="Prisustvuj" class="btn btn-default">
+                                                <f:ajax execute="@form" render="dogadjajDetalji"></f:ajax>
+                                            </h:commandButton>
+
+                                            <h4><h:outputText id="uspeh" rendered="#{detaljiBean.uspeh}" class='label label-success label-lg' value="#{detaljiBean.poruka}"></h:outputText></h4>
+                                            <h4><h:outputText id="neuspeh" rendered="#{detaljiBean.neuspeh}" class='label label-warning label-lg' value="#{detaljiBean.poruka}"></h:outputText></h4>
+                                        </h:form>
+
+                                    </h:panelGroup>
+                                    <h:form rendered="#{loginBean.korisnik.ime eq detaljiBean.dogadjaj.kreator.ime}">
+                                        <h:commandButton  action="#{detaljiBean.obrisi()}" value="Obriši" class="btn btn-danger">
+
+                                        </h:commandButton>
+                                    </h:form>
+                                </div>
+                            </div>
+                            <h:panelGroup layout="block" class="panel panel-danger" rendered="#{loginBean.korisnik eq null}">
+                                <div class="panel-heading"><h5><h:outputText   value="Želiš da prisustvuješ događaju a još uvek nisi registrovan?"></h:outputText></h5></div>
+                                <div class="panel-body"><h:link outcome="login.xhtml" value="Registruj se!" class="btn btn-default"></h:link></div>
+                            </h:panelGroup>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>
